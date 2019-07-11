@@ -1,1 +1,1 @@
-include ':jtWallet', ':library'
+include ':jtWallet', ':library', ':app'

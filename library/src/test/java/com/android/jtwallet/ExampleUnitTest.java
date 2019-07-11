@@ -24,7 +24,7 @@ public class ExampleUnitTest {
 
     @Test
     public void keyStore() {
-        JtKeyPair jtKeyPair = new JtKeyPair("jBvrdYc6G437hipoCiEpTwrWSRBS2ahXN6", "snBPyRRpE56ea4QGCpTMVTQWoirT2");
+        JtKeyPair jtKeyPair = new JtKeyPair("jHY6aRcs7J6KnfgqD4FVwTQ247boj9nbDZ", "shExMjiMqza4DdMaSg3ra9vxWPZsQ");
         try {
             KeyStoreFile keyStoreFile = KeyStore.createLight("Key123456", jtKeyPair);
             System.out.println(keyStoreFile.toString());
