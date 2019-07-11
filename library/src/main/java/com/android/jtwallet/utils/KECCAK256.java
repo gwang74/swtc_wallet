@@ -2,10 +2,6 @@ package com.android.jtwallet.utils;
 
 import org.spongycastle.crypto.digests.KeccakDigest;
 
-/**
- * @author QuincySx
- * @date 2018/3/2 上午11:12
- */
 public class KECCAK256 {
     private static final int keccak256_DIGEST_LENGTH = 32;
 
