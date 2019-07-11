@@ -26,6 +26,8 @@ import javax.crypto.spec.SecretKeySpec;
 public class KeyStore {
 
     private static final int N_LIGHT = 1 << 12;
+    private static final int P_LIGHT = 6;
+
     private static final int N_STANDARD = 1 << 18;
     private static final int P_STANDARD = 1;
 
@@ -47,7 +49,7 @@ public class KeyStore {
 
     public static KeyStoreFile createLight(String password, JtKeyPair ecKeyPair)
             throws CipherException {
-        return create(password, ecKeyPair, N_LIGHT, P_STANDARD);
+        return create(password, ecKeyPair, N_LIGHT, P_LIGHT);
     }
 
     public static KeyStoreFile create(String password, JtKeyPair ecKeyPair, int n, int p)
