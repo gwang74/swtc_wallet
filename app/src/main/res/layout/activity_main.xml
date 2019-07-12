@@ -9,6 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/btn_import"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="解析KeyStore" />
+
         <EditText
             android:id="@+id/edt_data"
             android:layout_width="180dp"
@@ -21,8 +27,8 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_alignTop="@+id/edt_data"
-            android:layout_toRightOf="@+id/edt_data"
             android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/edt_data"
             android:text="commit" />
 
         <ImageView
@@ -41,7 +47,16 @@
             android:layout_below="@+id/img_qr"
             android:layout_centerHorizontal="true"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="50dp" />
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:id="@+id/btn_cp"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/tv_data"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="copy" />
     </RelativeLayout>
 
 

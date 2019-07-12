@@ -1,9 +1,13 @@
 package com.android.example;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -20,9 +24,11 @@ import com.android.jtwallet.qrCode.QrCodeGenerator;
 public class MainActivity extends AppCompatActivity {
 
     private static ImageView imageView;
-    private static TextView textView;
     private static EditText editText;
+    private static TextView textView;
     private static Button button;
+    private static Button buttonIm;
+    private static Button buttonCp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +39,27 @@ public class MainActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.tv_data);
         editText = (EditText) findViewById(R.id.edt_data);
         button = (Button) findViewById(R.id.btn_qr);
+        buttonIm = (Button) findViewById(R.id.btn_import);
+        buttonCp = (Button) findViewById(R.id.btn_cp);
+        buttonCp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clipboard("", textView.getText());
+            }
+        });
+        buttonIm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ImportActivity.class);
+                startActivity(intent);
+            }
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String data = editText.getText().toString();
                 if (!TextUtils.isEmpty(data)) {
-                    getQrCoe(data);
+                    getQrCode(data);
                 }
             }
         });
@@ -50,13 +71,18 @@ public class MainActivity extends AppCompatActivity {
         } catch (CipherException e) {
             e.printStackTrace();
         }
-        getQrCoe(keyStoreFile.toString());
+        getQrCode(keyStoreFile.toString());
 
     }
 
-    private void getQrCoe(String data) {
+    private void getQrCode(String data) {
         Bitmap bitmap = QrCodeGenerator.getQrCodeImage(data, 800, Color.BLACK);
         imageView.setImageBitmap(bitmap);
         textView.setText(QrCodeGenerator.decodeQrImage(bitmap));
+    }
+
+    private void clipboard(CharSequence label, CharSequence text) {
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboardManager.setPrimaryClip(ClipData.newPlainText(label, text));
     }
 }
