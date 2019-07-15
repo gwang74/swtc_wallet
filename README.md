@@ -1,8 +1,27 @@
 # swtc_wallet
+[![](https://jitpack.io/v/gwang74/swtc_wallet.svg)](https://jitpack.io/#gwang74/swtc_wallet)
+
 主要用于生成SWTC钱包的keyStore和二维码，其中keyStore是基于ETH的keyStore生成方式做成的。
 
 
 ## 使用说明
+Step 1. Add the JitPack repository to your build file
+```xml
+allprojects {
+repositories {
+	...
+	maven { url 'https://jitpack.io' }
+	}
+}
+```
+
+Step 2. Add the dependency
+```xml
+dependencies {
+	implementation 'com.github.gwang74:swtc_wallet:1.0'
+}
+```
+
 
 ### keyStore生成
 ```android
