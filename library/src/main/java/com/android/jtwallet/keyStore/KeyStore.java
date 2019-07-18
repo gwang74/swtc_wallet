@@ -1,5 +1,6 @@
 package com.android.jtwallet.keyStore;
 
+import com.android.jtwallet.client.Wallet;
 import com.android.jtwallet.utils.HexUtils;
 import com.android.jtwallet.utils.KECCAK256;
 
@@ -42,17 +43,17 @@ public class KeyStore {
 
     private static SecureRandom secureRandom = new SecureRandom();
 
-    public static KeyStoreFile createStandard(String password, JtKeyPair ecKeyPair)
+    public static KeyStoreFile createStandard(String password, Wallet wallet)
             throws CipherException {
-        return create(password, ecKeyPair, N_STANDARD, P_STANDARD);
+        return create(password, wallet, N_STANDARD, P_STANDARD);
     }
 
-    public static KeyStoreFile createLight(String password, JtKeyPair ecKeyPair)
+    public static KeyStoreFile createLight(String password, Wallet wallet)
             throws CipherException {
-        return create(password, ecKeyPair, N_LIGHT, P_LIGHT);
+        return create(password, wallet, N_LIGHT, P_LIGHT);
     }
 
-    public static KeyStoreFile create(String password, JtKeyPair ecKeyPair, int n, int p)
+    public static KeyStoreFile create(String password, Wallet wallet, int n, int p)
             throws CipherException {
 
         byte[] salt = generateRandomBytes(32);
@@ -63,14 +64,14 @@ public class KeyStore {
         byte[] encryptKey = Arrays.copyOfRange(derivedKey, 0, 16);
         byte[] iv = generateRandomBytes(16);
 
-        byte[] privateKeyBytes = ecKeyPair.getPrivateKey().getBytes(Charset.forName("UTF-8"));
+        byte[] privateKeyBytes = wallet.getSecret().getBytes(Charset.forName("UTF-8"));
 
         byte[] cipherText = performCipherOperation(
                 Cipher.ENCRYPT_MODE, iv, encryptKey, privateKeyBytes);
 
         byte[] mac = generateMac(derivedKey, cipherText);
 
-        return createWalletFile(ecKeyPair, cipherText, iv, salt, mac, n, p);
+        return createWalletFile(wallet, cipherText, iv, salt, mac, n, p);
     }
 
     private static byte[] performCipherOperation(
@@ -111,16 +112,16 @@ public class KeyStore {
     }
 
     private static KeyStoreFile createWalletFile(
-            JtKeyPair ecKeyPair, byte[] cipherText, byte[] iv, byte[] salt, byte[] mac,
+            Wallet wallet, byte[] cipherText, byte[] iv, byte[] salt, byte[] mac,
             int n, int p) {
 
-        KeyStoreFile walletFile = new KeyStoreFile();
-        walletFile.setAddress(ecKeyPair.getAddress());
+        KeyStoreFile keyStoreFile = new KeyStoreFile();
+        keyStoreFile.setAddress(wallet.getAddress());
 
         KeyStoreFile.Crypto crypto = new KeyStoreFile.Crypto();
         crypto.setCipher(CIPHER);
         crypto.setCiphertext(HexUtils.toHex(cipherText));
-        walletFile.setCrypto(crypto);
+        keyStoreFile.setCrypto(crypto);
 
         KeyStoreFile.CipherParams cipherParams = new KeyStoreFile.CipherParams();
         cipherParams.setIv(HexUtils.toHex(iv));
@@ -136,11 +137,11 @@ public class KeyStore {
         crypto.setKdfparams(kdfParams);
 
         crypto.setMac(HexUtils.toHex(mac));
-        walletFile.setCrypto(crypto);
-        walletFile.setId(UUID.randomUUID().toString());
-        walletFile.setVersion(CURRENT_VERSION);
+        keyStoreFile.setCrypto(crypto);
+        keyStoreFile.setId(UUID.randomUUID().toString());
+        keyStoreFile.setVersion(CURRENT_VERSION);
 
-        return walletFile;
+        return keyStoreFile;
     }
 
     static void validate(KeyStoreFile walletFile) throws CipherException {
@@ -159,7 +160,7 @@ public class KeyStore {
         }
     }
 
-    public static JtKeyPair decrypt(String password, KeyStoreFile walletFile)
+    public static Wallet decrypt(String password, KeyStoreFile walletFile)
             throws CipherException {
 
         validate(walletFile);
@@ -203,7 +204,7 @@ public class KeyStore {
 
         byte[] encryptKey = Arrays.copyOfRange(derivedKey, 0, 16);
         byte[] privateKey = performCipherOperation(Cipher.DECRYPT_MODE, iv, encryptKey, cipherText);
-        return new JtKeyPair(walletFile.getAddress(), new String(privateKey, Charset.forName("UTF-8")));
+        return Wallet.fromSecret(new String(privateKey, Charset.forName("UTF-8")));
     }
 
     private static byte[] generateAes128CtrDerivedKey(

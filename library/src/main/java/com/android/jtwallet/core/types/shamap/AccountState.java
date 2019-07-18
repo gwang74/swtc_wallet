@@ -1,6 +1,5 @@
 package com.android.jtwallet.core.types.shamap;
 
-import com.android.jtwallet.core.coretypes.STObject;
 import com.android.jtwallet.core.coretypes.Vector256;
 import com.android.jtwallet.core.coretypes.hash.Hash256;
 import com.android.jtwallet.core.coretypes.hash.Index;
@@ -10,12 +9,6 @@ import com.android.jtwallet.core.types.known.sle.LedgerHashes;
 import com.android.jtwallet.core.types.known.sle.entries.DirectoryNode;
 import com.android.jtwallet.core.types.known.sle.entries.OfferDirectory;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Iterator;
 
 public class AccountState extends ShaMap {

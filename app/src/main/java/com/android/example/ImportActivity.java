@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.jtwallet.client.Wallet;
 import com.android.jtwallet.keyStore.CipherException;
-import com.android.jtwallet.keyStore.JtKeyPair;
 import com.android.jtwallet.keyStore.KeyStore;
 import com.android.jtwallet.keyStore.KeyStoreFile;
 
@@ -36,8 +36,8 @@ public class ImportActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(data) && !TextUtils.isEmpty(pwd)) {
                     try {
                         KeyStoreFile keyStoreFile = KeyStoreFile.parse(data);
-                        JtKeyPair jtKeyPair = KeyStore.decrypt(pwd, keyStoreFile);
-                        textView.setText("Address:" + jtKeyPair.getAddress() + "\nPrivateKey:" + jtKeyPair.getPrivateKey());
+                        Wallet wallet = KeyStore.decrypt(pwd, keyStoreFile);
+                        textView.setText("Address:" + wallet.getAddress() + "\nPrivateKey:" + wallet.getSecret());
                     } catch (IOException e) {
                         e.printStackTrace();
                         textView.setText(e.getMessage());

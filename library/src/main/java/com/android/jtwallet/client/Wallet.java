@@ -1,12 +1,11 @@
 package com.android.jtwallet.client;
 
-import static com.android.jtwallet.config.Config.getB58IdentiferCodecs;
-
-import com.android.jtwallet.config.Config;
 import com.android.jtwallet.crypto.ecdsa.IKeyPair;
 import com.android.jtwallet.crypto.ecdsa.Seed;
 import com.android.jtwallet.encoding.B58IdentiferCodecs;
 import com.android.jtwallet.encoding.common.B16;
+
+import static com.android.jtwallet.config.Config.getB58IdentiferCodecs;
 
 public class Wallet {
 	private IKeyPair keypairs = null;
@@ -28,11 +27,6 @@ public class Wallet {
 	public static Wallet generate() {
 		String secret = Seed.random();
 		IKeyPair keypairs = Seed.fromBase58(secret).keyPair();
-		byte[] bytes = keypairs.pub160Hash();
-		String address = Config.getB58IdentiferCodecs().encodeAddress(bytes);
-		// var address = Keypairs.deriveAddress(keypair.publicKey);
-		// //System.out.println("secret=" + secret);
-		// //System.out.println("address=" + address);
 		Wallet wallet = new Wallet();
 		wallet.setKeypairs(keypairs);
 		wallet.setSecret(secret);
@@ -63,12 +57,12 @@ public class Wallet {
 	/**
 	 * 使用钱包密钥对信息进行签名
 	 * 
-	 * @param secret
+	 * @param message
 	 * @return
 	 */
 	public String sign(String message) {
 		byte[] der = this.keypairs.signMessage(message.getBytes());
-		return B16.toString(der);
+		return B16.encode(der);
 	}
 	
 	/**

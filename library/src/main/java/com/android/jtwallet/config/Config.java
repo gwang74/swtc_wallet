@@ -54,8 +54,7 @@ public class Config {
 	 * We set up all the defaults here
 	 */
 	static {
-		
-		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+//		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		setAlphabet(DEFAULT_ALPHABET);
 		setFeeCushion(1.1);
 		initBouncy();

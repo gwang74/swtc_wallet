@@ -1,13 +1,10 @@
 package com.android.jtwallet;
 
 import com.android.jtwallet.keyStore.CipherException;
-import com.android.jtwallet.keyStore.JtKeyPair;
 import com.android.jtwallet.keyStore.KeyStore;
 import com.android.jtwallet.keyStore.KeyStoreFile;
 
 import org.junit.Test;
-
-import java.nio.charset.Charset;
 
 import static org.junit.Assert.assertEquals;
 

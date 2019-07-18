@@ -1,21 +1,15 @@
 package com.android.jtwallet.utils;
 
+import android.text.TextUtils;
+
+import com.android.jtwallet.encoding.common.B16;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.android.jtwallet.client.bean.AmountInfo;
-import com.android.jtwallet.encoding.common.B16;
-
 public class Utils {
-	public static void main(String[] args) {
-		String aaString = Utils.hexToString("11");
-		//System.out.println(aaString);
-	}
-	
 	public static String bigHex(BigInteger bn) {
 		return B16.toStringTrimmed(bn.toByteArray());
 	}
@@ -34,7 +28,7 @@ public class Utils {
 		for (; i < str.length(); i += 2) {
 			list.add(unicode2String(String.valueOf(Integer.parseInt(str.substring(i, i + 2), 16))));
 		}
-		return String.join("", list);
+		return TextUtils.join("", list);
 	}
 	
 	public static String unicode2String(String unicode) {
@@ -48,20 +42,7 @@ public class Utils {
 		}
 		return string.toString();
 	}
-	
-	public static AmountInfo parseAmount(Object amount) {
-		AmountInfo info = new AmountInfo();
-	    if (amount instanceof String && StringUtils.isNotEmpty((String)amount)) {
-	        String value = (new BigDecimal((String)amount)).divide(new BigDecimal(1000000.0)).toString();
-	        info.setValue(value);
-	    } else if (CheckUtils.isValidAmount((AmountInfo) amount)) {
-	        return (AmountInfo) amount;
-	    } else {
-	    	info = null;
-	    }
-	    return info;
-	}
-	
+
 	/**
 	 * 字符串转换成为16进制(无需Unicode编码)
 	 * 
@@ -116,6 +97,4 @@ public class Utils {
 			return "0";
 		}
 	}
-	
-	
 }

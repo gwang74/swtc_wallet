@@ -15,8 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.jtwallet.client.Wallet;
 import com.android.jtwallet.keyStore.CipherException;
-import com.android.jtwallet.keyStore.JtKeyPair;
 import com.android.jtwallet.keyStore.KeyStore;
 import com.android.jtwallet.keyStore.KeyStoreFile;
 import com.android.jtwallet.qrCode.QrCodeGenerator;
@@ -64,10 +64,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        JtKeyPair jtKeyPair = new JtKeyPair("jHY6aRcs7J6KnfgqD4FVwTQ247boj9nbDZ", "shExMjiMqza4DdMaSg3ra9vxWPZsQ");
+        Wallet wallet = Wallet.fromSecret("shExMjiMqza4DdMaSg3ra9vxWPZsQ");
         KeyStoreFile keyStoreFile = null;
         try {
-            keyStoreFile = KeyStore.createLight("Key123456", jtKeyPair);
+            keyStoreFile = KeyStore.createLight("Key123456", wallet);
         } catch (CipherException e) {
             e.printStackTrace();
         }

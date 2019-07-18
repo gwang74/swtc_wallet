@@ -1,14 +1,14 @@
 package com.android.jtwallet.connection;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Future;
+import com.alibaba.fastjson.JSON;
+import com.android.jtwallet.utils.JsonUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.android.jtwallet.utils.JsonUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Future;
 
 public class Connection {
 	final static Logger logger = LoggerFactory.getLogger(Connection.class);
@@ -61,9 +61,11 @@ public class Connection {
 			Future<String> future = ExecutorPool.getExecutorPool().submit(new HandleProcessTask(params, webSocket));
 			try {
 				while (!future.isDone()) {
-					ObjectMapper mapper = new ObjectMapper();
+//					ObjectMapper mapper = new ObjectMapper();
 					String result = future.get();
-					map = mapper.readValue(result, Map.class);
+//					map = mapper.readValue(result, Map.class);
+					map = JSON.parseObject(result, Map.class);
+
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

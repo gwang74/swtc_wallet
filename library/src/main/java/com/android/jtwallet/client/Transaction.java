@@ -96,7 +96,6 @@ public class Transaction {
 	}
 	
 	public String getAccount() {
-		// tx_json.get("Account")
 		return account;
 	}
 	
@@ -212,7 +211,7 @@ public class Transaction {
 	/**
 	 * 添加备注信息
 	 * 
-	 * @param memo
+	 * @param memos
 	 */
 	public void addMemo(List<String> memos) {
 		JSONArray memosArray = new JSONArray();
@@ -232,7 +231,7 @@ public class Transaction {
 	/**
 	 * 签名
 	 * 
-	 * @param sercet
+	 * @param secret
 	 * @return
 	 */
 	public String sign(String secret) {
@@ -451,7 +450,7 @@ public class Transaction {
 			params.put("tx_blob", tx_json_blob);
 		} else {
 			// 不签名交易传给底层
-			params.put("secret", this.getSecret());
+			params.put("secret", this.secret);
 			// params.put("tx_json", tx_json);
 		}
 		params.put("command", this.command);
@@ -476,7 +475,7 @@ public class Transaction {
 			params.put("tx_blob", this.getTxBlob());
 		} else {
 			// 不签名交易传给底层
-			params.put("secret", this.getSecret());
+			params.put("secret", this.secret);
 			params.put("tx_json", txJson);
 		}
 		params.put("command", this.command);

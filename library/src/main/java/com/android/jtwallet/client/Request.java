@@ -2,16 +2,9 @@ package com.android.jtwallet.client;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class Request {
-	protected static final Logger logger = LoggerFactory.getLogger(Request.class);
-	ObjectMapper mapper = new ObjectMapper();
 	private Remote remote = null;
 	private String command ="";
 
