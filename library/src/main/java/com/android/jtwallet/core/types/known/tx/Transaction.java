@@ -183,7 +183,7 @@ public class Transaction extends STObject {
 	/**
 	 * 添加备注信息
 	 * 
-	 * @param memo
+	 * @param memos
 	 */
 	public void addMemo(List<String> memos) {
 		JSONArray memosArray = new JSONArray();

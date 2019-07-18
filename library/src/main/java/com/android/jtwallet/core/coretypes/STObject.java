@@ -1,9 +1,5 @@
 package com.android.jtwallet.core.coretypes;
 
-import java.util.EnumMap;
-import java.util.Iterator;
-import java.util.TreeMap;
-
 import com.alibaba.fastjson.JSONObject;
 import com.android.jtwallet.core.coretypes.hash.Hash128;
 import com.android.jtwallet.core.coretypes.hash.Hash160;
@@ -40,6 +36,10 @@ import com.android.jtwallet.core.serialized.TypeTranslator;
 import com.android.jtwallet.core.serialized.enums.EngineResult;
 import com.android.jtwallet.core.serialized.enums.LedgerEntryType;
 import com.android.jtwallet.core.serialized.enums.TransactionType;
+
+import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.TreeMap;
 
 public class STObject implements SerializedType, Iterable<Field> {
     // Internally the fields are stored in a TreeMap
