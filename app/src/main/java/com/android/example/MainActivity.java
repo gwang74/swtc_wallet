@@ -14,12 +14,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.jtwallet.client.Remote;
+import com.android.jtwallet.client.Transaction;
 import com.android.jtwallet.client.Wallet;
+import com.android.jtwallet.client.bean.AmountInfo;
+import com.android.jtwallet.client.bean.TransactionInfo;
+import com.android.jtwallet.connection.Connection;
+import com.android.jtwallet.connection.ConnectionFactory;
 import com.android.jtwallet.keyStore.CipherException;
 import com.android.jtwallet.keyStore.KeyStore;
 import com.android.jtwallet.keyStore.KeyStoreFile;
 import com.android.jtwallet.qrCode.QrCodeGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
     private static Button button;
     private static Button buttonIm;
     private static Button buttonCp;
+    // 生产环境
+    // static String server = "wss://s.jingtum.com:5020";
+    // 测试环境
+    private static String server = "ws://ts5.jingtum.com:5020";
+    // 是否使用本地签名方式提交交易
+    private static Boolean local_sign = true;
+    private static Connection conn = ConnectionFactory.getCollection(server);
+    private static Remote remote = new Remote(conn, local_sign);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         getQrCode(keyStoreFile.toString());
+        transfer();
 
     }
 
@@ -84,5 +103,18 @@ public class MainActivity extends AppCompatActivity {
     private void clipboard(CharSequence label, CharSequence text) {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         clipboardManager.setPrimaryClip(ClipData.newPlainText(label, text));
+    }
+
+    public void transfer() {
+        AmountInfo amount = new AmountInfo();
+        amount.setCurrency("SWT");
+        amount.setValue("0.01");
+        Transaction tx = remote.buildPaymentTx("j3UcBBbes7HFgmTLmGkEQQShM2jdHbdGAe", "jNn89aY84G23onFXupUd7bkMode6aKYMt8", amount);
+        tx.setSecret("ssWiEpky7Bgj5GFrexxpKexYkeuUv");
+        List<String> memos = new ArrayList<String>();
+        memos.add("测试转账");
+        tx.addMemo(memos);
+        TransactionInfo bean = tx.submit();
+        Toast.makeText(this, bean.getEngineResultMessage(), Toast.LENGTH_SHORT);
     }
 }

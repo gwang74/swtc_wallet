@@ -169,7 +169,7 @@ public class Remote {
     public Account requestTx(String hash) {
         Map params = new HashMap();
         // 校验,并将参数写入message对象
-        if (!TextUtils.isEmpty(hash)) {
+        if (TextUtils.isEmpty(hash)) {
             throw new RemoteException("invalid tx hash");
         }
         params.put("transaction", hash);
